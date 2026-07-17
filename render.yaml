@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: llm-auto-grader
+    env: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt && python scripts/seed_demo_data.py"
+    startCommand: "gunicorn auto_grader.dashboard:app"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.3
+      # Optional: add ANTHROPIC_API_KEY in the Render dashboard (not here)
+      # to use the real LLM judge instead of the mock fallback.
