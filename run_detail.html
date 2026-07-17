@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{ run.label or ("Run " ~ run.id) }} — LLM Auto-Grader</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="wrap">
+    <a class="back-link" href="/">← All runs</a>
+    <h1>{{ run.label or ("Run " ~ run.id) }}</h1>
+    <p class="subtitle">Model: {{ run.model_name }}</p>
+
+    {% for res in results %}
+    <div class="card">
+      <table>
+        <tr>
+          <th style="width: 25%">Test case</th>
+          <td>{{ res.test_case_id }}</td>
+        </tr>
+        <tr>
+          <th>Unit tests</th>
+          <td>
+            {% if res.passed == res.total %}
+              <span class="badge-pass">{{ res.passed }}/{{ res.total }} passed</span>
+            {% else %}
+              <span class="badge-fail">{{ res.passed }}/{{ res.total }} passed</span>
+            {% endif %}
+          </td>
+        </tr>
+        <tr>
+          <th>Judge scores</th>
+          <td>correctness {{ res.correctness }}/5 · code quality {{ res.code_quality }}/5 · safety {{ res.safety }}/5</td>
+        </tr>
+        <tr>
+          <th>Flags</th>
+          <td>
+            {% for f in res.flags %}<span class="flag">{{ f }}</span>{% else %}—{% endfor %}
+          </td>
+        </tr>
+        <tr>
+          <th>Final score</th>
+          <td>
+            {% set s = res.final_score %}
+            <span class="score {{ 'high' if s >= 80 else ('mid' if s >= 50 else 'low') }}">{{ "%.1f"|format(s) }}</span>
+          </td>
+        </tr>
+      </table>
+      {% if res.reasoning %}<p class="reasoning">"{{ res.reasoning }}"</p>{% endif %}
+      <details>
+        <summary>Show submitted code</summary>
+        <pre><code>{{ res.response_code }}</code></pre>
+      </details>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

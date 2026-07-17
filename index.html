@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>LLM Response Auto-Grader</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>LLM Response Auto-Grader</h1>
+    <p class="subtitle">Automated correctness checks + LLM-as-judge scoring for coding responses, across eval runs.</p>
+
+    <div class="card">
+      <canvas id="trendChart" height="90"></canvas>
+    </div>
+
+    <div class="card">
+      <table>
+        <thead>
+          <tr><th>Run</th><th>Model</th><th>Avg Score</th><th># Responses</th><th></th></tr>
+        </thead>
+        <tbody>
+          {% for r in runs %}
+          <tr>
+            <td>{{ r.label or ("Run " ~ r.id) }}</td>
+            <td>{{ r.model_name }}</td>
+            <td>
+              {% set s = r.avg_score or 0 %}
+              <span class="score {{ 'high' if s >= 80 else ('mid' if s >= 50 else 'low') }}">{{ "%.1f"|format(s) }}</span>
+            </td>
+            <td>{{ r.n }}</td>
+            <td><a href="/run/{{ r.id }}">View details →</a></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const ctx = document.getElementById('trendChart');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: {{ chart_labels|safe }},
+        datasets: [{
+          label: 'Average score',
+          data: {{ chart_scores|safe }},
+          borderColor: '#3b6fd6',
+          backgroundColor: 'rgba(59,111,214,0.1)',
+          tension: 0.25,
+          fill: true,
+          pointRadius: 4,
+        }]
+      },
+      options: {
+        scales: { y: { min: 0, max: 100 } },
+        plugins: { legend: { display: false } }
+      }
+    });
+  </script>
+</body>
+</html>
