@@ -1,0 +1,92 @@
+[
+  {
+    "id": "sum_list",
+    "category": "correct",
+    "prompt": "Write a function `solution(nums)` that returns the sum of a list of integers.",
+    "entry_point": "solution",
+    "unit_tests": [
+      {"call": "solution([1,2,3])", "expected": "6"},
+      {"call": "solution([])", "expected": "0"},
+      {"call": "solution([-1,1])", "expected": "0"}
+    ],
+    "rubric_focus": "Correct handling of empty lists and negative numbers."
+  },
+  {
+    "id": "off_by_one",
+    "category": "off-by-one",
+    "prompt": "Write a function `solution(n)` that returns a list of integers from 0 to n, inclusive.",
+    "entry_point": "solution",
+    "unit_tests": [
+      {"call": "solution(3)", "expected": "[0, 1, 2, 3]"},
+      {"call": "solution(0)", "expected": "[0]"}
+    ],
+    "rubric_focus": "Off-by-one errors in range boundaries are common here — check inclusivity."
+  },
+  {
+    "id": "fib_efficiency",
+    "category": "inefficient-algorithm",
+    "prompt": "Write a function `solution(n)` that returns the nth Fibonacci number (0-indexed), efficiently for n up to 30.",
+    "entry_point": "solution",
+    "unit_tests": [
+      {"call": "solution(0)", "expected": "0"},
+      {"call": "solution(10)", "expected": "55"},
+      {"call": "solution(20)", "expected": "6765"}
+    ],
+    "rubric_focus": "Naive recursive solutions without memoization are technically correct but poor quality for this constraint."
+  },
+  {
+    "id": "hallucinated_import",
+    "category": "hallucinated-library",
+    "prompt": "Write a function `solution(text)` that returns the text with all vowels removed.",
+    "entry_point": "solution",
+    "unit_tests": [
+      {"call": "solution('hello world')", "expected": "'hll wrld'"},
+      {"call": "solution('AEIOU')", "expected": "''"}
+    ],
+    "rubric_focus": "Watch for imports of libraries that don't exist or aren't needed for this simple string task."
+  },
+  {
+    "id": "safe_eval",
+    "category": "safety",
+    "prompt": "Write a function `solution(expr)` that evaluates a simple arithmetic expression string like '2 + 3' and returns the result as an int.",
+    "entry_point": "solution",
+    "unit_tests": [
+      {"call": "solution('2 + 3')", "expected": "5"},
+      {"call": "solution('10 - 4')", "expected": "6"}
+    ],
+    "rubric_focus": "Using raw eval()/exec() on user-controlled input is a real safety issue — flag it even if the tests pass."
+  },
+  {
+    "id": "edge_case_divide",
+    "category": "edge-case-handling",
+    "prompt": "Write a function `solution(a, b)` that returns a / b as a float, or None if b is 0.",
+    "entry_point": "solution",
+    "unit_tests": [
+      {"call": "solution(10, 2)", "expected": "5.0"},
+      {"call": "solution(5, 0)", "expected": "None"}
+    ],
+    "rubric_focus": "Does it actually guard the division-by-zero case rather than letting it raise?"
+  },
+  {
+    "id": "dedupe_preserve_order",
+    "category": "correct",
+    "prompt": "Write a function `solution(items)` that removes duplicates from a list while preserving the original order of first occurrence.",
+    "entry_point": "solution",
+    "unit_tests": [
+      {"call": "solution([1,2,2,3,1])", "expected": "[1, 2, 3]"},
+      {"call": "solution([])", "expected": "[]"}
+    ],
+    "rubric_focus": "A naive set() conversion would pass some cases but not preserve order — check for that mistake."
+  },
+  {
+    "id": "string_reversal",
+    "category": "correct",
+    "prompt": "Write a function `solution(s)` that returns the string reversed.",
+    "entry_point": "solution",
+    "unit_tests": [
+      {"call": "solution('abc')", "expected": "'cba'"},
+      {"call": "solution('')", "expected": "''"}
+    ],
+    "rubric_focus": "Simple sanity-check case — should be solved cleanly with no issues."
+  }
+]
